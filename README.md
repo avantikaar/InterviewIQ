@@ -286,6 +286,35 @@ The tests cover the agent logic included in the repository. Add integration and 
 
 ---
 
+## 🎯 Relevance to the MASAL.ai AI Forward Deployed Engineer Internship
+
+The internship description emphasizes practical Voice AI agents, conversational design, Python, API integration, LLM APIs, speech-to-text, text-to-speech, testing and iterative improvement. InterviewIQ demonstrates several of these foundations in a candidate-screening use case.
+
+| **JD Focus Area** | **How InterviewIQ Relates** | **Current Status** |
+|---|---|---|
+| Python development | FastAPI backend, interview orchestration and evaluation logic are implemented in Python. | Implemented |
+| Voice AI / conversational AI | Multi-turn interviewer flow with spoken prompts and spoken responses. | Browser-based prototype |
+| Speech-to-text (STT) | Browser Web Speech Recognition captures and transcribes candidate answers where supported. | Implemented via browser API |
+| Text-to-speech (TTS) | Browser SpeechSynthesis reads interviewer questions and responses aloud. | Implemented via browser API |
+| LLM APIs | Optional OpenAI Chat Completions integration generates interviewer turns and assessment summaries. | Implemented; requires API key |
+| Prompt engineering and conversation flows | System instructions define interviewer behavior, answer evaluation criteria, follow-up behavior and interview completion. | Implemented |
+| API integration | FastAPI REST endpoints connect the browser interface with interview and evaluation services. | Implemented |
+| RAG / knowledge grounding | A local interview guide is searched using keyword overlap and relevant snippets are passed into the LLM prompt. | Lightweight retrieval only; not vector RAG |
+| Agent frameworks / voice orchestration platforms | The current workflow is orchestrated with custom Python and browser APIs. | External platforms/frameworks not integrated |
+| CRM, property and project-data integration | The API structure can be extended to connect external business systems. | Not implemented |
+| Function calling / external tools | No LLM function-calling or external tool-execution layer is currently present. | Not implemented |
+| Scenario testing and iteration | A Pytest test module is included for core agent behavior; broader conversation and browser voice testing remains future work. | Basic test coverage |
+
+### Skills and tools demonstrated in this project
+
+**Implemented technologies:** Python, FastAPI, REST APIs, OpenAI API integration, prompt-driven LLM interaction, conversational flow design, browser SpeechRecognition, SpeechSynthesis, JavaScript, HTML, CSS, SQLite, keyword-based knowledge retrieval, Pytest, Git and GitHub.
+
+**Relevant engineering practices:** API integration, request/response handling, asynchronous Python endpoints, conversation history handling, answer evaluation, persistence, basic test-driven verification, debugging and technical documentation.
+
+**Important distinction:** InterviewIQ is a voice-enabled interview-screening prototype. It demonstrates transferable Voice AI and agent-building foundations, but it is not yet a real-estate sales agent and does not currently integrate a CRM, property inventory, external voice orchestration platform, function calling or a production vector database. These are possible next steps rather than existing features.
+
+---
+
 ## 🧭 Future Enhancements
 
 - Integrate a dedicated real-time voice service for low-latency, interruption-aware conversations.
