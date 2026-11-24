@@ -1,78 +1,310 @@
-# InterviewIQ — Agentic Voice AI Interview Platform
+# 🎙️ InterviewIQ
 
-A portfolio-ready prototype demonstrating voice-first interviewing, LLM-based adaptive questioning, answer evaluation, lightweight RAG, API integration, persistence and analytics.
+### Agentic Voice AI Interview Platform for Automated Candidate Screening & Technical Assessment
 
-## Features
-- Candidate setup: role, experience level and Technical / HR / Mixed interview.
-- Voice input using browser SpeechRecognition where supported.
-- Spoken interviewer responses using browser SpeechSynthesis.
-- Dynamic LLM interviewer when an OpenAI key is configured.
-- Demo mode works without an API key using curated question banks and a transparent heuristic rubric.
-- Lightweight keyword-based retrieval over `knowledge_base/interview_guide.md`.
-- SQLite persistence for interviews, turns and reports.
-- Analytics dashboard and FastAPI Swagger docs.
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-Frontend-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?style=flat-square&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-Optional%20LLM%20Integration-412991?style=flat-square&logo=openai&logoColor=white)](https://platform.openai.com/)
+[![Pytest](https://img.shields.io/badge/Pytest-Testing-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](https://docs.pytest.org/)
 
-## Quick start
-Python 3.10+ recommended.
+---
+
+## 📸 Screenshots
+
+> Add screenshots from your running application to the `screenshots/` folder, then replace the filenames below with the images you capture.
+
+### Main Dashboard
+
+![InterviewIQ Dashboard](screenshots/dashboard.png)
+
+### Voice Interview Studio
+
+![Voice Interview Studio](screenshots/voice-interview.png)
+
+### Candidate Interview and AI Conversation
+
+![Interview Conversation](screenshots/interview-conversation.png)
+
+### Automated Evaluation Report
+
+![Interview Evaluation Report](screenshots/evaluation-report.png)
+
+### Analytics Dashboard
+
+![Analytics Dashboard](screenshots/analytics.png)
+
+---
+
+## 📌 Overview
+
+**InterviewIQ** is a browser-based, voice-first AI interview platform designed to streamline preliminary candidate screening and structured technical assessment. It combines a web interface, a FastAPI backend, optional LLM-powered interviewer logic, answer evaluation and interview analytics.
+
+The platform simulates an interview conversation: the interviewer asks a question aloud, the candidate responds through a microphone, browser speech recognition converts the response into text, and the backend evaluates the answer before returning the next interviewer turn.
+
+The project currently supports Technical, HR and Mixed interview modes, candidate and role setup, interview history and a final assessment report.
+
+### The platform:
+
+- Conducts structured interviews based on candidate role, experience level and interview type.
+- Reads interviewer questions and responses aloud using browser speech synthesis.
+- Captures candidate responses through browser speech recognition where supported.
+- Transcribes spoken responses and submits them to the FastAPI evaluation service.
+- Uses an optional OpenAI integration for LLM-driven interviewer responses.
+- Supports a demo mode with curated questions and a heuristic evaluation rubric.
+- Stores interview sessions, turns and reports in SQLite.
+- Presents interview activity and assessment summaries through an analytics dashboard.
+
+---
+
+## ✨ Features
+
+| **Feature** | **Description** |
+|---|---|
+| 🎙️ **Voice-Based Interview** | Browser-based speech input captures candidate responses and converts them into text. |
+| 🔊 **AI Interviewer Speech** | Browser SpeechSynthesis reads interviewer questions and responses aloud. |
+| 🔁 **Automatic Voice Conversation** | In the voice-first mode, the interviewer speaks, the browser listens, the transcript is submitted, and the next response is spoken. |
+| 🧠 **LLM-Powered Interview Flow** | Optional OpenAI API integration supports dynamic interviewer responses when an API key is configured. |
+| 🧪 **Demo Interview Mode** | Curated question banks and a heuristic rubric allow a local demonstration without an external API key. |
+| 📚 **Knowledge-Guided Responses** | Lightweight keyword-based retrieval uses the included interview guide as supporting context. |
+| 📊 **Answer Evaluation** | Responses are assessed across correctness, clarity, relevance and use of examples. |
+| 🗂️ **Interview History** | SQLite stores candidate sessions, turns, interview status and reports. |
+| 📈 **Analytics Dashboard** | Displays total interviews, completed interviews, active sessions and average score. |
+| 📄 **Assessment Report** | Generates a summary with strengths, improvement areas and a recommendation label. |
+| 🔌 **REST API** | FastAPI exposes endpoints for starting interviews, submitting turns, retrieving records and finishing sessions. |
+
+---
+
+## 🔄 System Architecture
+
+The platform follows a browser-to-backend request flow:
+
+| **Stage** | **Component** | **Responsibility** |
+|---|---|---|
+| **1** | **Candidate Interface** | Collects candidate details and displays the interview studio, conversation and assessment report. |
+| **2** | **Browser Voice Layer** | Uses SpeechSynthesis for spoken interviewer turns and Web Speech Recognition for candidate transcription where supported. |
+| **3** | **FastAPI Backend** | Receives interview requests, validates inputs and coordinates interview state. |
+| **4** | **Agent & Evaluation Logic** | Selects or generates interviewer responses, retrieves guide snippets and evaluates candidate answers. |
+| **5** | **Optional OpenAI Integration** | Provides LLM-driven conversation and evaluation support when configured with a valid API key. |
+| **6** | **SQLite Persistence** | Stores interview metadata, conversation turns and completed reports. |
+| **7** | **Analytics & Reporting UI** | Retrieves stored interviews and presents summary metrics and assessment output. |
+
+### Voice Interaction Pipeline
+
+```text
+AI Interviewer Prompt
+        |
+        v
+Browser SpeechSynthesis
+        |
+        v
+Candidate Hears Question
+        |
+        v
+Browser Speech Recognition
+        |
+        v
+Speech-to-Text Transcript
+        |
+        v
+FastAPI Interview Endpoint
+        |
+        v
+Agent / Evaluation Logic <----> Interview Guide Retrieval
+        |
+        +----> Optional OpenAI API
+        |
+        v
+Evaluation + Next Interviewer Response
+        |
+        v
+SQLite Session / Turn Persistence
+        |
+        v
+Interviewer Speaks Next Response
+```
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend & API Development
+- Python
+- FastAPI
+- Uvicorn
+- Pydantic
+- REST API design
+- Python-dotenv
+
+### Voice & Frontend Development
+- JavaScript (ES6+)
+- HTML5
+- CSS3
+- Browser Web Speech API — SpeechRecognition / webkitSpeechRecognition
+- SpeechSynthesis API
+- Asynchronous JavaScript and Fetch API
+
+### AI & Evaluation
+- OpenAI API integration (optional; requires user-provided API key)
+- Prompt-driven interviewer logic
+- Heuristic answer evaluation in demo mode
+- Keyword-based knowledge retrieval over a local Markdown knowledge base
+
+### Database & Persistence
+- SQLite
+- SQL
+- Session and conversation persistence
+
+### Testing & Developer Tools
+- Pytest
+- HTTPX
+- Visual Studio Code
+- Git
+- GitHub
+- PowerShell
+
+---
+
+## ⚙️ Core API Endpoints
+
+| **Method** | **Endpoint** | **Purpose** |
+|---|---|---|
+| GET | `/api/health` | Checks backend availability and configured LLM mode. |
+| GET | `/api/interviews` | Retrieves interview records for the dashboard. |
+| POST | `/api/interviews/start` | Creates a candidate interview session. |
+| GET | `/api/interviews/{id}` | Retrieves an interview and its associated information. |
+| POST | `/api/interviews/{id}/turn` | Submits a candidate answer and obtains an evaluation and interviewer reply. |
+| POST | `/api/interviews/{id}/finish` | Completes the session and generates the assessment report. |
+
+Interactive API documentation is available through FastAPI Swagger UI at `/docs`.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.10 or later
+- Google Chrome or Microsoft Edge recommended for browser voice input
+- Git
+- OpenAI API key only when using the optional LLM integration
+
+### 1. Clone the repository
 
 ```bash
+git clone https://github.com/avantikaar/InterviewIQ.git
+cd InterviewIQ
+```
+
+### 2. Create a virtual environment
+
+**Windows PowerShell**
+
+```powershell
 python -m venv .venv
-# Windows: .venv\Scripts\activate
-# macOS/Linux: source .venv/bin/activate
+.venv\Scripts\Activate.ps1
+```
+
+**macOS / Linux**
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env`. Add `OPENAI_API_KEY` for dynamic LLM conversations. Never commit `.env`.
+### 4. Configure environment variables
+
+Copy `.env.example` to `.env` and configure the values:
+
+```env
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4o-mini
+DATABASE_PATH=interviewiq.db
+```
+
+The OpenAI API key is optional for demo mode. Keep your real `.env` file private and never commit API credentials.
+
+### 5. Run the application
 
 ```bash
 uvicorn app.main:app --reload
 ```
-Open http://127.0.0.1:8000. API docs: http://127.0.0.1:8000/docs
 
-## Voice use
-Use Chrome or Edge, allow microphone access, click the microphone, speak, then submit the transcribed answer. Browser voice recognition is not supported in every browser; typing is always available. Speech synthesis reads interviewer turns aloud.
+Open the application:
 
-## API
-- `GET /api/health`
-- `GET /api/interviews`
-- `POST /api/interviews/start`
-- `GET /api/interviews/{id}`
-- `POST /api/interviews/{id}/turn`
-- `POST /api/interviews/{id}/finish`
+- **Dashboard:** http://127.0.0.1:8000
+- **API Documentation:** http://127.0.0.1:8000/docs
 
-## Architecture
-Browser voice UI → FastAPI → agent orchestration → optional OpenAI API → SQLite. The agent retrieves relevant knowledge snippets from the included markdown knowledge base. The current retriever is intentionally lightweight and transparent; upgrade it to embeddings + ChromaDB for a production-grade RAG implementation.
+---
 
-## Responsible use
-Scores are based only on answer content and a simple job-related rubric. Never assess accent, voice pitch, speed, identity or protected traits. This prototype is not a hiring decision system. Human review is required.
+## 🎧 Using the Voice Interview
 
-## Known limitations
-- Browser-native speech recognition support varies; use Chrome/Edge.
-- Demo-mode evaluation is heuristic, not a validated assessment model.
-- SQLite is suitable for local demos, not concurrent production workloads.
-- No authentication, consent workflow, candidate deletion portal, or production security controls are included.
-- External LLM usage requires your own API key and may incur charges.
+1. Open the Interview Studio and enter the candidate name, role, experience level and interview type.
+2. Keep **Automatic voice conversation** enabled and start the interview.
+3. Allow microphone access when prompted by the browser.
+4. Listen to the AI interviewer read the question aloud.
+5. Speak your answer when the interface switches to listening mode.
+6. The recognized transcript is submitted to the backend for evaluation.
+7. The interviewer speaks its next response and continues the conversation.
+8. Use **Replay question** or **Pause voice mode** when needed.
+9. Finish the interview to generate the assessment report.
 
-## Push to GitHub
+**Browser note:** Speech recognition is browser-dependent and may require an active network connection. If voice recognition is unavailable or microphone permission is denied, disable automatic voice conversation and use typed answers. Speech synthesis voice availability varies by operating system and browser.
+
+---
+
+## 🧪 Testing
+
+Run the included test suite from the project root:
+
 ```bash
-git init
-git add .
-git commit -m "Build InterviewIQ voice AI interview platform"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/InterviewIQ.git
-git push -u origin main
+pytest -q
 ```
 
+The tests cover the agent logic included in the repository. Add integration and browser-level tests before relying on the system in a production hiring workflow.
 
-## Voice-first interview mode
+---
 
-The interview studio supports a hands-free browser voice loop:
-1. Start the interview and allow microphone access.
-2. The interviewer reads the prompt aloud using browser speech synthesis.
-3. Browser speech recognition listens for the candidate's answer.
-4. When the recognition session ends after the candidate pauses, the transcript is submitted to the FastAPI evaluator.
-5. The interviewer speaks the next response and listens again.
+## 🔐 Responsible AI & Limitations
 
-Use Chrome or Edge and allow microphone access. Speech recognition availability and language quality depend on the browser, operating system, network and browser speech service. If voice recognition is unavailable, turn off **Automatic voice conversation**, type an answer, and submit it. The app also includes replay and pause/resume controls.
+- Interview scores are decision-support signals, not hiring decisions.
+- Human review is required before any candidate decision.
+- The current demo-mode scoring uses heuristic logic and is not a validated psychometric or hiring assessment.
+- The knowledge retriever is keyword-based; it is not an embedding-based vector database or a full production RAG pipeline.
+- Browser-native speech recognition support, transcription accuracy and available voices vary by platform.
+- The application does not currently implement authentication, enterprise access control, a candidate consent workflow or a candidate data deletion portal.
+- SQLite is intended for local demonstration and lightweight usage, not high-concurrency production deployment.
+- The current browser voice loop is not a low-latency, full-duplex real-time audio agent.
+- LLM mode requires a valid API key and may incur provider charges.
 
-This is a browser-based voice prototype, not a low-latency full-duplex telephony/streaming voice agent. For production deployment, add a dedicated real-time audio service, authentication, consent/privacy controls, monitoring, and end-to-end tests.
+---
+
+## 🧭 Future Enhancements
+
+- Integrate a dedicated real-time voice service for low-latency, interruption-aware conversations.
+- Add role-specific interview plans and configurable competency rubrics.
+- Upgrade keyword retrieval to embedding-based RAG with a vector store.
+- Add interviewer configuration, question difficulty adaptation and richer follow-up logic.
+- Add authentication, role-based access, candidate consent and data retention controls.
+- Add comprehensive API integration tests and browser automation tests.
+- Deploy with production-grade monitoring, logging and secure secret management.
+
+---
+
+## 👩‍💻 Author
+
+**Avantikaa**  
+GitHub: [@avantikaar](https://github.com/avantikaar)
+
+---
+
+<p align="center">
+  <b>InterviewIQ — Making structured candidate screening more interactive through voice and AI.</b>
+</p>
