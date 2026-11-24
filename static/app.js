@@ -123,7 +123,7 @@ function renderInterviewRows(){
 function exportInterviews(){
   const cols=["Candidate","Role","Interview Type","Status","Score","Created At"];
   const rows=dashboardItems.map(x=>[x.candidate_name,x.role,x.interview_type,x.status,x.score??"",x.created_at]);
-  const csv=[cols,...rows].map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\\r\\n");
+  const csv=[cols,...rows].map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join(String.fromCharCode(13,10));
   const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));
   const a=document.createElement("a");a.href=url;a.download="interviewiq-interviews.csv";a.click();URL.revokeObjectURL(url);
 }
