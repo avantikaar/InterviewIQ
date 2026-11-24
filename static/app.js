@@ -113,11 +113,36 @@ $("finish").onclick=async()=>{
     $("report").scrollIntoView({behavior:"smooth"});
   }catch(err){alert(err.message)}
 };
+let dashboardItems=[];
+function renderInterviewRows(){
+  const query=($("search-interviews")?.value||"").toLowerCase().trim();
+  const status=$("status-filter")?.value||"all";
+  const filtered=dashboardItems.filter(x=>(status==="all"||x.status===status)&&((x.candidate_name||"").toLowerCase().includes(query)||(x.role||"").toLowerCase().includes(query)));
+  $("rows").innerHTML=filtered.length?filtered.map(x=>`<tr><td><b>${safe(x.candidate_name)}</b></td><td>${safe(x.role)}</td><td>${safe(x.interview_type)}</td><td><span class="status-chip ${x.status==="completed"?"completed":""}">${safe((x.status||"").replace("_"," "))}</span></td><td><b>${x.score??"—"}${x.score!==null&&x.score!==undefined?"%":""}</b></td><td>${new Date(x.created_at).toLocaleDateString()}</td></tr>`).join(""):'<tr><td colspan="6" class="empty-state">No interviews match these filters.</td></tr>';
+}
+function exportInterviews(){
+  const cols=["Candidate","Role","Interview Type","Status","Score","Created At"];
+  const rows=dashboardItems.map(x=>[x.candidate_name,x.role,x.interview_type,x.status,x.score??"",x.created_at]);
+  const csv=[cols,...rows].map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\\r\\n");
+  const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));
+  const a=document.createElement("a");a.href=url;a.download="interviewiq-interviews.csv";a.click();URL.revokeObjectURL(url);
+}
 async function loadDashboard(){try{
-  let d=await api("/api/interviews"),a=d.items||[],done=a.filter(x=>x.status==="completed"),scores=done.map(x=>x.score).filter(x=>x!==null);
-  $("total").textContent=a.length;$("completed").textContent=done.length;$("active").textContent=a.filter(x=>x.status==="in_progress").length;
-  $("average").textContent=scores.length?Math.round(scores.reduce((x,y)=>x+y,0)/scores.length)+"%":"—";
-  $("rows").innerHTML=a.length?a.map(x=>`<tr><td>${safe(x.candidate_name)}</td><td>${safe(x.role)}</td><td>${safe(x.interview_type)}</td><td>${safe(x.status)}</td><td>${x.score??"—"}</td><td>${new Date(x.created_at).toLocaleDateString()}</td></tr>`).join(""):'<tr><td colspan="6">No interviews yet</td></tr>';
+  let d=await api("/api/interviews"),a=d.items||[];dashboardItems=a;
+  let done=a.filter(x=>x.status==="completed"),scores=done.map(x=>Number(x.score)).filter(x=>Number.isFinite(x));
+  let active=a.filter(x=>x.status==="in_progress").length,avg=scores.length?Math.round(scores.reduce((x,y)=>x+y,0)/scores.length):null;
+  $("total").textContent=a.length;$("completed").textContent=done.length;$("active").textContent=active;$("average").textContent=avg===null?"—":avg+"%";
+  const rate=a.length?Math.round(done.length/a.length*100):0;
+  $("completion-rate").textContent=a.length?rate+"%":"—";$("completion-bar").style.width=rate+"%";
+  $("latest-activity").textContent=a.length?new Date(a[0].created_at).toLocaleDateString():"—";
+  $("type-count").textContent=new Set(a.map(x=>x.interview_type).filter(Boolean)).size;
+  const buckets=[{label:"0–39",min:0,max:39},{label:"40–59",min:40,max:59},{label:"60–79",min:60,max:79},{label:"80–100",min:80,max:100}];
+  const counts=buckets.map(b=>scores.filter(s=>s>=b.min&&s<=b.max).length),max=Math.max(1,...counts);
+  $("score-chart").innerHTML=scores.length?buckets.map((b,i)=>`<div class="chart-col"><b>${counts[i]}</b><div class="chart-bar-wrap"><div class="chart-bar" style="height:${counts[i]/max*100}%"></div></div><label>${b.label}</label></div>`).join(""):'<p class="empty-state">Complete an interview to see score insights.</p>';
+  renderInterviewRows();
 }catch(e){$("rows").innerHTML="<tr><td colspan=6>"+safe(e.message)+"</td></tr>"}}
 $("refresh").onclick=loadDashboard;
+$("search-interviews").addEventListener("input",renderInterviewRows);
+$("status-filter").addEventListener("change",renderInterviewRows);
+$("export-csv").addEventListener("click",exportInterviews);
 setupVoice();health();
