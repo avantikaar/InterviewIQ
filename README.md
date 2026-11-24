@@ -13,27 +13,25 @@
 
 ## 📸 Screenshots
 
-> Add screenshots from your running application to the `screenshots/` folder, then replace the filenames below with the images you capture.
+### 1. Interview Studio — Candidate Setup
 
-### Main Dashboard
+![InterviewIQ Interview Studio](screenshots/dashboard.jpg)
 
-![InterviewIQ Dashboard](screenshots/dashboard.png)
+### 2. Automatic Voice Interview
 
-### Voice Interview Studio
+![InterviewIQ Automatic Voice Interview](screenshots/voice-interview.jpg)
 
-![Voice Interview Studio](screenshots/voice-interview.png)
+### 3. Voice Input and Microphone Interaction
 
-### Candidate Interview and AI Conversation
+![InterviewIQ Voice Input](screenshots/voice-input.jpg)
 
-![Interview Conversation](screenshots/interview-conversation.png)
+### 4. Live AI Interview Conversation
 
-### Automated Evaluation Report
+![InterviewIQ Live Conversation](screenshots/live-conversation.jpg)
 
-![Interview Evaluation Report](screenshots/evaluation-report.png)
+### 5. Analytics Dashboard
 
-### Analytics Dashboard
-
-![Analytics Dashboard](screenshots/analytics.png)
+![InterviewIQ Analytics Dashboard](screenshots/analytics-dashboard.jpg)
 
 ---
 
