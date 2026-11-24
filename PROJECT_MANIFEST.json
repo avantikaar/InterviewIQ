@@ -1,0 +1,20 @@
+{
+  "project": "InterviewIQ",
+  "file_count": 14,
+  "files": [
+    ".env.example",
+    ".gitignore",
+    "README.md",
+    "app/__init__.py",
+    "app/agent.py",
+    "app/db.py",
+    "app/main.py",
+    "app/schemas.py",
+    "knowledge_base/interview_guide.md",
+    "requirements.txt",
+    "static/app.js",
+    "static/index.html",
+    "static/styles.css",
+    "tests/test_agent.py"
+  ]
+}
